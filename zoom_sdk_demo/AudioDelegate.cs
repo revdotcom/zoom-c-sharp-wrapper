@@ -39,7 +39,7 @@ namespace zoom_sdk_demo
             uint node_id
             )
         {
-            if (!_streamers.ContainsKey(node_id))
+            if (!_streamers.ContainsKey(node_id) || _streamers[node_id].IsClosed())
             {
                 var streamer = new RevAiStreamer(
                     CZoomSDKeDotNetWrap.Instance.GetMeetingServiceWrap().GetMeetingParticipantsController()
@@ -49,7 +49,8 @@ namespace zoom_sdk_demo
                 streamer.StartAsync().Wait();
                 _streamers.Add(node_id, streamer);
             }
-
+            _streamers[node_id].SetNameIfNeeded(CZoomSDKeDotNetWrap.Instance.GetMeetingServiceWrap().GetMeetingParticipantsController()
+                .GetUserByUserID(node_id).GetUserNameW());
             _streamers[node_id].ByteChannel.Writer.TryWrite(data_.GetBuffer());
         }
 

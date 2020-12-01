@@ -19,13 +19,24 @@ namespace zoom_sdk_demo
             _speaker = speaker;
             _captioner = captioner;
             _socket = new ClientWebSocket();
-            ByteChannel = Channel.CreateBounded<byte[]>(new BoundedChannelOptions(20) {
+            ByteChannel = Channel.CreateBounded<byte[]>(new BoundedChannelOptions(30) {
                 FullMode = BoundedChannelFullMode.Wait
             });
         }
 
-        private readonly string _speaker;
-        private readonly ClientWebSocket _socket;
+        public bool IsClosed()
+        {
+            return _socket.State != WebSocketState.Open;
+        }
+
+        public void SetNameIfNeeded(
+            string name
+            )
+        {
+            if (name == _speaker)
+                return;
+            _speaker = name;
+        }
 
         public async Task StartAsync()
         {
@@ -63,6 +74,7 @@ namespace zoom_sdk_demo
                     arrays.Clear();
                 }
             }
+            ByteChannel.Writer.TryComplete();
         }
 
         public async Task SendDataAsync(
@@ -134,6 +146,9 @@ namespace zoom_sdk_demo
 
         public Channel<byte[]> ByteChannel { get; set; }
 
+
+        private string _speaker;
+        private readonly ClientWebSocket _socket;
         private readonly ZoomCaptioner _captioner;
 
         private const string Url = "wss://api.rev.ai/speechtotext/v1/stream";
