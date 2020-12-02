@@ -51,30 +51,37 @@ namespace zoom_sdk_demo
             }
             catch(Exception ex)
             {
-                Console.Error.WriteLine($"Failed to connect to rev.ai - {ex.Message}");
+                Console.WriteLine($"Failed to connect to rev.ai - {ex.Message}");
             }
         }
 
         private async Task StartSendLoopAsync()
         {
-            var arrays = new List<byte[]>();
-            var count = 0;
-            while(_socket.State == WebSocketState.Open)
+            try
             {
-                var bytes = await ByteChannel.Reader.ReadAsync();
-                arrays.Add(bytes);
-                count += 1;
-
-                if (count > 10)
+                var arrays = new List<byte[]>();
+                var count = 0;
+                while (_socket.State == WebSocketState.Open)
                 {
-                    var final = arrays.SelectMany(x => x).ToArray();
+                    var bytes = await ByteChannel.Reader.ReadAsync();
+                    arrays.Add(bytes);
+                    count += 1;
 
-                    await _socket.SendAsync(new ArraySegment<byte>(final), WebSocketMessageType.Binary, true, default).ConfigureAwait(false);
-                    count = 0;
-                    arrays.Clear();
+                    if (count > 10)
+                    {
+                        var final = arrays.SelectMany(x => x).ToArray();
+
+                        await _socket.SendAsync(new ArraySegment<byte>(final), WebSocketMessageType.Binary, true, default).ConfigureAwait(false);
+                        count = 0;
+                        arrays.Clear();
+                    }
                 }
+                ByteChannel.Writer.TryComplete();
             }
-            ByteChannel.Writer.TryComplete();
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         public async Task SendDataAsync(
@@ -83,37 +90,54 @@ namespace zoom_sdk_demo
         {
             if (_socket.State == WebSocketState.Open)
             {
-                Console.WriteLine("Sending data");
-                await _socket.SendAsync(new ArraySegment<byte>(data), WebSocketMessageType.Binary, true, default)
-                    .ConfigureAwait(false);
+                try
+                {
+                    Console.WriteLine("Sending data");
+                    await _socket.SendAsync(new ArraySegment<byte>(data), WebSocketMessageType.Binary, true, default)
+                        .ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
             }
         }
 
         internal async Task StartReceiveLoopAsync()
         {
-            while (Extensions.ReadingStates.Contains(_socket.State))
+            try
             {
-                switch (await _socket.ReceiveFullMessageAsync(default).ConfigureAwait(false))
+                while (Extensions.ReadingStates.Contains(_socket.State))
                 {
-                    case null:
-                        Console.WriteLine("Socket in closed state");
-                        return;
-                    case var received when received.Value.type == WebSocketMessageType.Text:
-                        var message = ParseMessage<RevAiMessage>(received.Value.data);
-                        if (message.Type == "final")
-                        {
-                            var textTranscript = $"{_speaker}: {String.Join("", message.Elements.Select(e => e.Value))}";
-                            await _captioner.SendCaptionAsync(textTranscript).ConfigureAwait(false);
-                        }
-                        continue;
-                    case var close when close.Value.type == WebSocketMessageType.Close:
-                        Console.WriteLine("Close received");
-                        return;
-                    default:
-                        Console.WriteLine("Unexpected data received");
-                        break;
+                    switch (await _socket.ReceiveFullMessageAsync(default).ConfigureAwait(false))
+                    {
+                        case null:
+                            Console.WriteLine("Socket in closed state");
+                            return;
+                        case var received when received.Value.type == WebSocketMessageType.Text:
+                            var message = ParseMessage<RevAiMessage>(received.Value.data);
+                            if (message.Type == "final")
+                            {
+                                if (message.Elements.Any(x => x.Type == "text"))
+                                {
+                                    var textTranscript = $"{_speaker}: {String.Join("", message.Elements.Select(e => e.Value))}";
+                                    await _captioner.SendCaptionAsync(textTranscript).ConfigureAwait(false);
+                                }
+                            }
+                            continue;
+                        case var close when close.Value.type == WebSocketMessageType.Close:
+                            Console.WriteLine("Close received");
+                            return;
+                        default:
+                            Console.WriteLine("Unexpected data received");
+                            break;
+                    }
+                    return;
                 }
-                return;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
             }
         }
 

@@ -23,6 +23,10 @@ namespace zoombot.Services
                     }),
                     UserName = inputs.UserName
                 };
+                if (_activeBots.ContainsKey(inputs.UserName))
+                {
+                    _activeBots.Remove(inputs.UserName);
+                }
                 _activeBots.Add(inputs.UserName, activeBot);
             }
         }
