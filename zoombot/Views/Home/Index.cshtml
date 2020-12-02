@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    @model BotModel;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Rev.ai Zoom Bot</h1>
+
+    <h3>Start a new bot</h3>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken();
+        @Html.ValidationSummary(true);
+
+        @Html.LabelFor(m => m.MeetingId);
+        <p />
+        @Html.TextBoxFor(m => m.MeetingId);
+        <p />
+        @Html.LabelFor(m => m.MeetingPassword);
+        <p />
+        @Html.PasswordFor(m => m.MeetingPassword);
+        <p />
+        @Html.LabelFor(m => m.UserName);
+        <p />
+        @Html.TextBoxFor(m => m.UserName);
+        <p />
+        @Html.LabelFor(m => m.Password);
+        <p />
+        @Html.PasswordFor(m => m.Password);
+        <p />
+        @Html.LabelFor(m => m.CaptionUrl);
+        <p />
+        @Html.TextBoxFor(m => m.CaptionUrl);
+        <p />
+        <input type="submit" value="Launch" />
+    }
+</div>

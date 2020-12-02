@@ -1,19 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.ComponentModel; // CancelEventArgs
+using System.Windows;
 using ZOOM_SDK_DOTNET_WRAP;
-using System.Threading;
 
 namespace zoom_sdk_demo
 {
@@ -35,7 +23,7 @@ namespace zoom_sdk_demo
                 case ZOOM_SDK_DOTNET_WRAP.MeetingStatus.MEETING_STATUS_ENDED:
                 case ZOOM_SDK_DOTNET_WRAP.MeetingStatus.MEETING_STATUS_FAILED:
                     {
-                        Show();
+                        System.Windows.Application.Current.Shutdown();
                     }
                     break;
                 default://todo
@@ -93,17 +81,16 @@ namespace zoom_sdk_demo
 
         private void button_join_api_Click(object sender, RoutedEventArgs e)
         {
-            var b = new JoinParam4NormalUser {
-
-            };
             RegisterCallBack();
-            ZOOM_SDK_DOTNET_WRAP.JoinParam param = new ZOOM_SDK_DOTNET_WRAP.JoinParam();
-            param.userType = ZOOM_SDK_DOTNET_WRAP.SDKUserType.SDK_UT_WITHOUT_LOGIN;
-            ZOOM_SDK_DOTNET_WRAP.JoinParam4WithoutLogin join_api_param = new ZOOM_SDK_DOTNET_WRAP.JoinParam4WithoutLogin();
-            join_api_param.meetingNumber = UInt64.Parse(textBox_meetingnumber_api.Text);
-            join_api_param.psw = String.IsNullOrWhiteSpace(textBox_meetingpw.Text) ? null : textBox_meetingpw.Text;
-            join_api_param.userName = "Rev.ai Transcriber";
-            var captionUrl = textBox_captionUrl.Text;
+            ZOOM_SDK_DOTNET_WRAP.JoinParam4WithoutLogin join_api_param = new ZOOM_SDK_DOTNET_WRAP.JoinParam4WithoutLogin {
+                meetingNumber = UInt64.Parse(JoinMeetingRequest.MeetingId),
+                psw = String.IsNullOrWhiteSpace(JoinMeetingRequest.Password) ? null : JoinMeetingRequest.Password,
+                userName = "Rev.ai Transcriber"
+            };
+            var captionUrl = JoinMeetingRequest.CaptionUrl;
+            ZOOM_SDK_DOTNET_WRAP.JoinParam param = new ZOOM_SDK_DOTNET_WRAP.JoinParam {
+                userType = ZOOM_SDK_DOTNET_WRAP.SDKUserType.SDK_UT_WITHOUT_LOGIN
+            };
             param.withoutloginJoin = join_api_param;
 
             ZOOM_SDK_DOTNET_WRAP.SDKError err = ZOOM_SDK_DOTNET_WRAP.CZoomSDKeDotNetWrap.Instance.GetMeetingServiceWrap().Join(param);
@@ -111,7 +98,7 @@ namespace zoom_sdk_demo
             {
                 Hide();
                 var audioDelegate = new AudioDelegate(captionUrl);
-                CZoomSDKeDotNetWrap.Instance.GetRawAudioHelper().subscribe(audioDelegate);
+                var res = CZoomSDKeDotNetWrap.Instance.GetRawAudioHelper().subscribe(audioDelegate);
             }
             else//error handle
             {

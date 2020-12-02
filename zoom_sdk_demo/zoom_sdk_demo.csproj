@@ -80,6 +80,7 @@
     <Compile Include="AudioDelegate.cs" />
     <Compile Include="ConnectedMessage.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="JoinMeetingRequest.cs" />
     <Compile Include="RevAiMessage.cs" />
     <Compile Include="RevAiStreamer.cs" />
     <Compile Include="start_join_meeting.xaml.cs">

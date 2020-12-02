@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel; // CancelEventArgs
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using ZOOM_SDK_DOTNET_WRAP;
 
 namespace zoom_sdk_demo
@@ -15,18 +18,13 @@ namespace zoom_sdk_demo
             InitializeComponent();
             //register callback
             ZOOM_SDK_DOTNET_WRAP.CZoomSDKeDotNetWrap.Instance.GetAuthServiceWrap().Add_CB_onAuthenticationReturn(onAuthenticationReturn);
-            ZOOM_SDK_DOTNET_WRAP.CZoomSDKeDotNetWrap.Instance.GetAuthServiceWrap().Add_CB_onLoginRet(onLoginRet);
-            ZOOM_SDK_DOTNET_WRAP.CZoomSDKeDotNetWrap.Instance.GetAuthServiceWrap().Add_CB_onLogout(onLogout);
-            //
-            ZOOM_SDK_DOTNET_WRAP.AuthParam param = new ZOOM_SDK_DOTNET_WRAP.AuthParam();
-            param.appKey = "MfgQItI2gIPgSkBrjbVHmH9hDL1Ct2CHrVDT"; //textBox_key.Text;
-            param.appSecret = "XeUOrpLUoKDsHr4WJWJj02pohMPBAODIgPML"; // textBox_secret.Text;
+
+            ZOOM_SDK_DOTNET_WRAP.AuthParam param = new ZOOM_SDK_DOTNET_WRAP.AuthParam {
+                appKey = "MfgQItI2gIPgSkBrjbVHmH9hDL1Ct2CHrVDT",
+                appSecret = "XeUOrpLUoKDsHr4WJWJj02pohMPBAODIgPML"
+            };
             ZOOM_SDK_DOTNET_WRAP.CZoomSDKeDotNetWrap.Instance.GetAuthServiceWrap().SDKAuth(param);
 
-            ZOOM_SDK_DOTNET_WRAP.AuthParam authParam = new ZOOM_SDK_DOTNET_WRAP.AuthParam();
-            authParam.appKey = "MfgQItI2gIPgSkBrjbVHmH9hDL1Ct2CHrVDT"; //textBox_key.Text;
-            authParam.appSecret = "XeUOrpLUoKDsHr4WJWJj02pohMPBAODIgPML"; // textBox_secret.Text;
-            ZOOM_SDK_DOTNET_WRAP.CZoomSDKeDotNetWrap.Instance.GetAuthServiceWrap().SDKAuth(authParam);
             Hide();
         }
 
@@ -36,23 +34,18 @@ namespace zoom_sdk_demo
             if (ZOOM_SDK_DOTNET_WRAP.AuthResult.AUTHRET_SUCCESS == ret)
             {
                 start_meeting_wnd.Show();
+                _ = Click(); // this callback must complete for authentication to be set, so we await yield the click call
             }
             else//error handle.todo
             {
                 Show();
             }
         }
-        public void onLoginRet(LOGINSTATUS ret, IAccountInfo pAccountInfo)
+
+        private async Task Click()
         {
-            //todo
-        }
-        public void onLogout()
-        {
-            //todo
-        }
-        private void button_auth_Click(object sender, RoutedEventArgs e)
-        {
-            
+            await Task.Yield();
+            start_meeting_wnd.button_join_api.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
         }
 
         void Wnd_Closing(object sender, CancelEventArgs e)

@@ -18,11 +18,16 @@ namespace zoom_sdk_demo
         {
             //init sdk
             {
+                JoinMeetingRequest.MeetingId = e.Args[0];
+                JoinMeetingRequest.CaptionUrl = e.Args[1];
+                JoinMeetingRequest.Password = e.Args.Length == 3 ? e.Args[2] : null;
+
                 ZOOM_SDK_DOTNET_WRAP.InitParam param = new ZOOM_SDK_DOTNET_WRAP.InitParam();
                 param.web_domain = "https://zoom.us";
                 ZOOM_SDK_DOTNET_WRAP.SDKError err = ZOOM_SDK_DOTNET_WRAP.CZoomSDKeDotNetWrap.Instance.Initialize(param);
                 if (ZOOM_SDK_DOTNET_WRAP.SDKError.SDKERR_SUCCESS == err)
                 {
+                    
                 }
                 else//error handle.todo
                 {
@@ -30,6 +35,7 @@ namespace zoom_sdk_demo
                 }
             }
         }
+
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             //clean up sdk
