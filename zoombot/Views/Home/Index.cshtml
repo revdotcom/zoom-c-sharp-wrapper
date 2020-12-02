@@ -2,9 +2,36 @@
     ViewData["Title"] = "Home Page";
     @model BotModel;
 }
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
 
 <div class="text-center">
-    <h1 class="display-4">Rev.ai Zoom Bot</h1>
+    <h2 class="display-4">Rev.ai Zoom Bot</h2>
+
+    <h3>Active Bots</h3>
+    <div style="padding-left: 20%; padding-right: 20%">
+        <table style="width: 100%">
+            <tr>
+                <th>Bot Owner</th>
+                <th>Controls</th>
+            </tr>
+            @foreach (var bot in Model.ActiveBots)
+            {
+                <tr>
+                    <td>@bot</td>
+                    <td>
+                        <a href="/Home/Delete/@bot">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <hr />
 
     <h3>Start a new bot</h3>
     @using (Html.BeginForm("Index", "Home", FormMethod.Post))

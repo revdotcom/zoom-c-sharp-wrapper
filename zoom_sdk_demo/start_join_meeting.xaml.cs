@@ -45,6 +45,11 @@ namespace zoom_sdk_demo
                 {
                     string name = user.GetUserNameW();
                     Console.Write(name);
+                    if (name == "Rev.ai Transcriber")
+                    {
+                        CZoomSDKeDotNetWrap.Instance.GetMeetingServiceWrap().GetMeetingAudioController()
+                            .MuteAudio(userid, false);
+                    }
                 }
             }
         }

@@ -1,20 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using zoombot.Models;
+using zoombot.Services;
 
 namespace zoombot.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
             var model = new BotModel();
@@ -27,7 +20,17 @@ namespace zoombot.Controllers
             BotModel model
             )
         {
-            Console.WriteLine("Testing the model");
+            Console.WriteLine("Launching bot");
+            BotLauncher.LaunchBot(model);
+            return Redirect("/");
+        }
+
+        public IActionResult Delete(
+            string id
+            )
+        {
+            Console.WriteLine($"Deleting bot for {id}");
+            BotLauncher.DeleteBot(id);
             return Redirect("/");
         }
 

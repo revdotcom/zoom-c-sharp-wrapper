@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Net;
 using zoombot.Models;
 
 namespace zoombot.Services
@@ -13,15 +13,39 @@ namespace zoombot.Services
             BotModel inputs
             )
         {
-            var activeBot = new ActiveBot {
-                Process = Process.Start(new ProcessStartInfo(fileName: BotExe, arguments: "") {
-
-                }),
-                UserName = inputs.UserName
-            };
+            if (!_activeBots.ContainsKey(inputs.UserName) || _activeBots[inputs.UserName].Process.HasExited)
+            {
+                var activeBot = new ActiveBot {
+                    Process = Process.Start(new ProcessStartInfo(fileName: BotExe, arguments: $"{inputs.MeetingId} {inputs.CaptionUrl} {inputs.MeetingPassword ?? ""}") {
+                        UserName = inputs.UserName,
+                        Password = new NetworkCredential("", inputs.Password).SecurePassword,
+                        Domain = Environment.UserDomainName
+                    }),
+                    UserName = inputs.UserName
+                };
+                _activeBots.Add(inputs.UserName, activeBot);
+            }
         }
 
-        private const string BotExe = "";
-        private static readonly IList<ActiveBot> _activeBots;
+        public static void DeleteBot(
+            string username
+            )
+        {
+            if (_activeBots.ContainsKey(username) )
+            {
+                var bot = _activeBots[username];
+                if (!bot.Process.HasExited)
+                {
+                    bot.Process.Kill();
+                }
+
+                _activeBots.Remove(username);
+            }
+        }
+
+        public static IList<string> GetActiveBots() => _activeBots.Where(x => !x.Value.Process.HasExited).Select(x => x.Key).ToList();
+
+        private const string BotExe = "C:\\work\\zoom-c-sharp-wrapper\\bin\\zoom_sdk_demo.exe";
+        private static readonly IDictionary<string, ActiveBot> _activeBots =  new Dictionary<string, ActiveBot>();
     }
 }

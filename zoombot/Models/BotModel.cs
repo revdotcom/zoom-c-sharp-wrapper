@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using zoombot.Services;
 
 namespace zoombot.Models
 {
     public class BotModel
     {
+        public IList<string> ActiveBots => BotLauncher.GetActiveBots();
+
         [Display(Name = "Meeting Id")]
         [Required(ErrorMessage = "Please enter a meeting id")]
         public string MeetingId { get; set; }
