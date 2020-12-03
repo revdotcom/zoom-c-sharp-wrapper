@@ -47,7 +47,8 @@ namespace zoom_sdk_demo
                     _captioner
                 );
                 streamer.StartAsync().Wait();
-                _streamers.Add(node_id, streamer);
+
+                _streamers[node_id] = streamer;
             }
             _streamers[node_id].SetNameIfNeeded(CZoomSDKeDotNetWrap.Instance.GetMeetingServiceWrap().GetMeetingParticipantsController()
                 .GetUserByUserID(node_id).GetUserNameW());

@@ -23,17 +23,14 @@ namespace zoombot.Services
                     }),
                     UserName = inputs.UserName
                 };
-                if (_activeBots.ContainsKey(inputs.Id))
-                {
-                    _activeBots.Remove(inputs.Id);
-                }
-                _activeBots.Add(inputs.Id, activeBot);
+
+                _activeBots[inputs.Id] = activeBot;
             }
         }
 
         public static void Bootup()
         {
-            var activeBot = new ActiveBot {
+            BootupBot = new ActiveBot {
                 Process = Process.Start(new ProcessStartInfo(fileName: BotExe) {
                     UserName = "zoom-bot",
                     Password = new NetworkCredential("", "password").SecurePassword,
