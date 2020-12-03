@@ -26,5 +26,7 @@ namespace zoombot.Models
         [Display(Name = "Caption Url")]
         [Required(ErrorMessage = "Please enter a caption url")]
         public string CaptionUrl { get; set; }
+
+        public string Id => $"{UserName}-{MeetingId}";
     }
 }

@@ -23,7 +23,6 @@ namespace zoom_sdk_demo
                 case ZOOM_SDK_DOTNET_WRAP.MeetingStatus.MEETING_STATUS_ENDED:
                 case ZOOM_SDK_DOTNET_WRAP.MeetingStatus.MEETING_STATUS_FAILED:
                     {
-                        System.Windows.Application.Current.Shutdown();
                     }
                     break;
                 default://todo

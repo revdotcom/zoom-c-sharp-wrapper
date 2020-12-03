@@ -18,9 +18,13 @@ namespace zoom_sdk_demo
         {
             //init sdk
             {
-                JoinMeetingRequest.MeetingId = e.Args[0];
-                JoinMeetingRequest.CaptionUrl = e.Args[1];
-                JoinMeetingRequest.Password = e.Args.Length == 3 ? e.Args[2] : null;
+                if (e.Args.Length == 0)
+                    JoinMeetingRequest.IsBootup = true;
+                else {
+                    JoinMeetingRequest.MeetingId = e.Args[0];
+                    JoinMeetingRequest.CaptionUrl = e.Args[1];
+                    JoinMeetingRequest.Password = e.Args.Length == 3 ? e.Args[2] : null;
+                }
 
                 ZOOM_SDK_DOTNET_WRAP.InitParam param = new ZOOM_SDK_DOTNET_WRAP.InitParam();
                 param.web_domain = "https://zoom.us";

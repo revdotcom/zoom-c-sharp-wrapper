@@ -13,7 +13,7 @@ namespace zoombot.Services
             BotModel inputs
             )
         {
-            if (!_activeBots.ContainsKey(inputs.UserName) || _activeBots[inputs.UserName].Process.HasExited)
+            if (!_activeBots.ContainsKey(inputs.Id) || _activeBots[inputs.Id].Process.HasExited)
             {
                 var activeBot = new ActiveBot {
                     Process = Process.Start(new ProcessStartInfo(fileName: BotExe, arguments: $"{inputs.MeetingId} {inputs.CaptionUrl} {inputs.MeetingPassword ?? ""}") {
@@ -23,31 +23,45 @@ namespace zoombot.Services
                     }),
                     UserName = inputs.UserName
                 };
-                if (_activeBots.ContainsKey(inputs.UserName))
+                if (_activeBots.ContainsKey(inputs.Id))
                 {
-                    _activeBots.Remove(inputs.UserName);
+                    _activeBots.Remove(inputs.Id);
                 }
-                _activeBots.Add(inputs.UserName, activeBot);
+                _activeBots.Add(inputs.Id, activeBot);
             }
         }
 
+        public static void Bootup()
+        {
+            var activeBot = new ActiveBot {
+                Process = Process.Start(new ProcessStartInfo(fileName: BotExe) {
+                    UserName = "zoom-bot",
+                    Password = new NetworkCredential("", "password").SecurePassword,
+                    Domain = Environment.UserDomainName
+                }),
+                UserName = "zoom-bot"
+            };
+        }
+
         public static void DeleteBot(
-            string username
+            string id
             )
         {
-            if (_activeBots.ContainsKey(username) )
+            if (_activeBots.ContainsKey(id) )
             {
-                var bot = _activeBots[username];
+                var bot = _activeBots[id];
                 if (!bot.Process.HasExited)
                 {
                     bot.Process.Kill();
                 }
 
-                _activeBots.Remove(username);
+                _activeBots.Remove(id);
             }
         }
 
         public static IList<string> GetActiveBots() => _activeBots.Where(x => !x.Value.Process.HasExited).Select(x => x.Key).ToList();
+
+        public static ActiveBot BootupBot { get; set; }
 
         private const string BotExe = "C:\\work\\zoom-c-sharp-wrapper\\bin\\zoom_sdk_demo.exe";
         private static readonly IDictionary<string, ActiveBot> _activeBots =  new Dictionary<string, ActiveBot>();

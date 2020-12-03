@@ -105,9 +105,9 @@ namespace zoom_sdk_demo
 
         internal async Task StartReceiveLoopAsync()
         {
-            try
+            while (Extensions.ReadingStates.Contains(_socket.State))
             {
-                while (Extensions.ReadingStates.Contains(_socket.State))
+                try
                 {
                     switch (await _socket.ReceiveFullMessageAsync(default).ConfigureAwait(false))
                     {
@@ -132,12 +132,12 @@ namespace zoom_sdk_demo
                             Console.WriteLine("Unexpected data received");
                             break;
                     }
-                    return;
                 }
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex);
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    continue;
+                }
             }
         }
 

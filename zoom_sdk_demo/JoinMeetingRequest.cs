@@ -13,5 +13,7 @@ namespace zoom_sdk_demo
         public static string Password { get; set;  }
 
         public static string CaptionUrl { get; set; }
+
+        public static bool IsBootup { get; set; }
     }
 }

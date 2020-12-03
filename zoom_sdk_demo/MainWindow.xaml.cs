@@ -33,6 +33,8 @@ namespace zoom_sdk_demo
         {
             if (ZOOM_SDK_DOTNET_WRAP.AuthResult.AUTHRET_SUCCESS == ret)
             {
+                if (JoinMeetingRequest.IsBootup)
+                    return;
                 start_meeting_wnd.Show();
                 _ = Click(); // this callback must complete for authentication to be set, so we await yield the click call
             }
