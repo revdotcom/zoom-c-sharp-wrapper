@@ -1,11 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using zoombot.Services;
 
 namespace zoombot
 {
@@ -13,14 +8,27 @@ namespace zoombot
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+            if (args.Length > 0)
+            {
+                BotLauncher.BotExe = args[0];
+            }
+
+            ((IHostApplicationLifetime)host.Services.GetService(typeof(IHostApplicationLifetime))).ApplicationStopped.Register(() => {
+            if (BotLauncher.BootupBot is { })
+            {
+                    BotLauncher.BootupBot.Process.Kill();
+            }
+            });
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>().UseUrls("http://0.0.0.0:5000");
                 });
     }
 }

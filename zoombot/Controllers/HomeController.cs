@@ -16,10 +16,14 @@ namespace zoombot.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(
+        public IActionResult Index(
             BotModel model
             )
         {
+            if (!ModelState.IsValid)
+            {
+                return Index();
+            }
             Console.WriteLine("Launching bot");
             BotLauncher.LaunchBot(model);
             return Redirect("/");

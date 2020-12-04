@@ -7,6 +7,11 @@
         border: 1px solid black;
         border-collapse: collapse;
     }
+
+    .field-validation-error {
+        color: red;
+        font-size: 10px;
+    }
 </style>
 
 <div class="text-center">
@@ -41,23 +46,27 @@
 
         @Html.LabelFor(m => m.MeetingId);
         <p />
+        @Html.ValidationMessageFor(m => m.MeetingId);
+        <p />
         @Html.TextBoxFor(m => m.MeetingId);
         <p />
         @Html.LabelFor(m => m.MeetingPassword);
         <p />
+        @Html.ValidationMessageFor(m => m.MeetingPassword);
+        <p />
         @Html.PasswordFor(m => m.MeetingPassword);
-        <p />
-        @Html.LabelFor(m => m.UserName);
-        <p />
-        @Html.TextBoxFor(m => m.UserName);
-        <p />
-        @Html.LabelFor(m => m.Password);
-        <p />
-        @Html.PasswordFor(m => m.Password);
         <p />
         @Html.LabelFor(m => m.CaptionUrl);
         <p />
+        @Html.ValidationMessageFor(m => m.CaptionUrl);
+        <p />
         @Html.TextBoxFor(m => m.CaptionUrl);
+        <p />
+        @Html.LabelFor(m => m.Name);
+        <p />
+        @Html.ValidationMessageFor(m => m.Name);
+        <p />
+        @Html.TextBoxFor(m => m.Name);
         <p />
         <input type="submit" value="Launch" />
     }

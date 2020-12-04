@@ -16,12 +16,8 @@ namespace zoombot.Services
             if (!_activeBots.ContainsKey(inputs.Id) || _activeBots[inputs.Id].Process.HasExited)
             {
                 var activeBot = new ActiveBot {
-                    Process = Process.Start(new ProcessStartInfo(fileName: BotExe, arguments: $"{inputs.MeetingId} {inputs.CaptionUrl} {inputs.MeetingPassword ?? ""}") {
-                        UserName = inputs.UserName,
-                        Password = new NetworkCredential("", inputs.Password).SecurePassword,
-                        Domain = Environment.UserDomainName
-                    }),
-                    UserName = inputs.UserName
+                    Process = Process.Start(new ProcessStartInfo(fileName: BotExe, arguments: $"{inputs.MeetingId} {inputs.CaptionUrl} {inputs.MeetingPassword ?? ""}")),
+                    UserName = inputs.MeetingId
                 };
 
                 _activeBots[inputs.Id] = activeBot;
@@ -32,11 +28,11 @@ namespace zoombot.Services
         {
             BootupBot = new ActiveBot {
                 Process = Process.Start(new ProcessStartInfo(fileName: BotExe) {
-                    UserName = "zoom-bot",
-                    Password = new NetworkCredential("", "password").SecurePassword,
-                    Domain = Environment.UserDomainName
+                    UserName = "zoombot",
+                    Password = new NetworkCredential("", "g7A>xPH-3/Q\"kv-!").SecurePassword,
+                    Domain = Environment.UserDomainName,
                 }),
-                UserName = "zoom-bot"
+                UserName = "zoombot"
             };
         }
 
@@ -60,7 +56,8 @@ namespace zoombot.Services
 
         public static ActiveBot BootupBot { get; set; }
 
-        private const string BotExe = "C:\\work\\zoom-c-sharp-wrapper\\bin\\zoom_sdk_demo.exe";
+        public static string BotExe { get; set; } = "zoom_sdk_demo.exe";
+
         private static readonly IDictionary<string, ActiveBot> _activeBots =  new Dictionary<string, ActiveBot>();
     }
 }
