@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel; // CancelEventArgs
+using System.Diagnostics;
 using System.Windows;
 using ZOOM_SDK_DOTNET_WRAP;
 
@@ -86,6 +87,11 @@ namespace zoom_sdk_demo
         private void button_join_api_Click(object sender, RoutedEventArgs e)
         {
             RegisterCallBack();
+            CZoomSDKeDotNetWrap.Instance.GetSettingServiceWrap().GetAudioSettings().
+                EnableAutoJoinAudio(true);
+            CZoomSDKeDotNetWrap.Instance.GetSettingServiceWrap().GetAudioSettings()
+                .EnableAlwaysMuteMicWhenJoinVoip(true);
+
             ZOOM_SDK_DOTNET_WRAP.JoinParam4WithoutLogin join_api_param = new ZOOM_SDK_DOTNET_WRAP.JoinParam4WithoutLogin {
                 meetingNumber = UInt64.Parse(JoinMeetingRequest.MeetingId),
                 psw = String.IsNullOrWhiteSpace(JoinMeetingRequest.Password) ? null : JoinMeetingRequest.Password,
@@ -101,8 +107,9 @@ namespace zoom_sdk_demo
             if (ZOOM_SDK_DOTNET_WRAP.SDKError.SDKERR_SUCCESS == err)
             {
                 Hide();
+
                 var audioDelegate = new AudioDelegate(captionUrl);
-                var res = CZoomSDKeDotNetWrap.Instance.GetRawAudioHelper().subscribe(audioDelegate);
+                CZoomSDKeDotNetWrap.Instance.GetRawAudioHelper().subscribe(audioDelegate);
             }
             else//error handle
             {

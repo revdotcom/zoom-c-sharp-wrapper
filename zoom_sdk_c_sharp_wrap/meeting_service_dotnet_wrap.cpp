@@ -521,4 +521,8 @@ namespace ZOOM_SDK_DOTNET_WRAP {
 
 		return CMeetingLiveStreamControllerDotNetWrap::Instance;
 	}
+
+	IClosedCaptionCtrlDotNetWrap^ CMeetingServiceDotNetWrap::GetClosedCaptionCtlr() {
+		return CClosedCaptionCtrlDotNetWrap::Instance;
+	}
 }

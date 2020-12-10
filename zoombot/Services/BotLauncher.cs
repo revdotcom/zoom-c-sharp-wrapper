@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using zoombot.Models;
 
 namespace zoombot.Services
@@ -15,9 +16,11 @@ namespace zoombot.Services
         {
             if (!_activeBots.ContainsKey(inputs.Id) || _activeBots[inputs.Id].Process.HasExited)
             {
+                var process = Process.Start(new ProcessStartInfo(fileName: BotExe, arguments: $"{inputs.MeetingId} {inputs.CaptionUrl} {inputs.MeetingPassword ?? ""}"));
+
                 var activeBot = new ActiveBot {
-                    Process = Process.Start(new ProcessStartInfo(fileName: BotExe, arguments: $"{inputs.MeetingId} {inputs.CaptionUrl} {inputs.MeetingPassword ?? ""}")),
-                    UserName = inputs.MeetingId
+                    Process = process,
+                    UserName = inputs.MeetingId,
                 };
 
                 _activeBots[inputs.Id] = activeBot;

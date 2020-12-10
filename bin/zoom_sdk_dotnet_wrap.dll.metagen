@@ -753,6 +753,11 @@ Interface ZOOM_SDK_DOTNET_WRAP.IMeetingChatControllerDotNetWrap: AutoLayout, Ans
     Add_CB_onChatStatusChangedNotification(onChatStatusChangedNotification): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
     Remove_CB_onChatMsgNotifcation(onChatMsgNotifcation): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
     Remove_CB_onChatStatusChangedNotification(onChatStatusChangedNotification): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+Interface ZOOM_SDK_DOTNET_WRAP.IClosedCaptionCtrlDotNetWrap: AutoLayout, AnsiClass, Class, Public, ClassSemanticsMask, Abstract, BeforeFieldInit
+  Methods:
+    IsMeetingSupportCC(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    CanSendClosedCaption(Int32 IsLong): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    SendClosedCaption(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
 Interface ZOOM_SDK_DOTNET_WRAP.IMeetingPasswordAndScreenNameHandler: AutoLayout, AnsiClass, Class, Public, ClassSemanticsMask, Abstract, BeforeFieldInit
   Methods:
     GetRequiredInfoType(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
@@ -1452,6 +1457,7 @@ Interface ZOOM_SDK_DOTNET_WRAP.IMeetingServiceDotNetWrap: AutoLayout, AnsiClass,
     GetMeetingBreakoutRoomsController(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
     GetMeetingParticipantsController(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
     GetMeetingLiveStreamController(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    GetClosedCaptionCtlr(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
     Add_CB_onMeetingStatusChanged(onMeetingStatusChanged): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
     Add_CB_onMeetingStatisticsWarningNotification(onMeetingStatisticsWarningNotification): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
     Add_CB_onMeetingSecureKeyNotification(onMeetingSecureKeyNotification): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract

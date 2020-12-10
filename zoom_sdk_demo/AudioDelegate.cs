@@ -41,6 +41,7 @@ namespace zoom_sdk_demo
         {
             if (!_streamers.ContainsKey(node_id) || _streamers[node_id].IsClosed())
             {
+                Console.WriteLine("New speaker joined, starting stream");
                 var streamer = new RevAiStreamer(
                     CZoomSDKeDotNetWrap.Instance.GetMeetingServiceWrap().GetMeetingParticipantsController()
                         .GetUserByUserID(node_id).GetUserNameW(),

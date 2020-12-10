@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using ZOOM_SDK_DOTNET_WRAP;
 
 namespace zoom_sdk_demo
 {
@@ -34,6 +35,14 @@ namespace zoom_sdk_demo
                 _sequence += 1;
                 _semaphore.Release();
             }
+        }
+
+        private void InternalPostCaptionTwoAsync(
+            string captionContent
+            )
+        {
+            Console.WriteLine(CZoomSDKeDotNetWrap.Instance.GetMeetingServiceWrap().GetClosedCaptionCtlr()
+                .SendClosedCaption(captionContent));
         }
 
         private async Task InternalPostCaptionAsync(
@@ -70,7 +79,7 @@ namespace zoom_sdk_demo
             HttpStatusCode.GatewayTimeout,
         };
 
-        private int _sequence;
+        private int _sequence = 10;
         private string _baseUrl;
         private static readonly HttpClient _client = new HttpClient();
         private static readonly TimeSpan CaptionTimeout = TimeSpan.FromSeconds(2);
