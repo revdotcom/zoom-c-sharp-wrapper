@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Channels;
-using System.Threading.Tasks;
-using System.IO;
 using ZOOM_SDK_DOTNET_WRAP;
 
 namespace zoom_sdk_demo
@@ -16,6 +14,7 @@ namespace zoom_sdk_demo
             Stream = Channel.CreateUnbounded<(uint, byte[])>();
             _streamers = new Dictionary<uint, RevAiStreamer>();
             _captioner = new ZoomCaptioner(captionUrl);
+            _ = _captioner.SendCaptionAsync("Captions provided by Rev.ai Meeting Bot");
         }
 
         public void onMixedAudioRawDataReceived(

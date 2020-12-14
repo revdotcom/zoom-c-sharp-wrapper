@@ -37,14 +37,6 @@ namespace zoom_sdk_demo
             }
         }
 
-        private void InternalPostCaptionTwoAsync(
-            string captionContent
-            )
-        {
-            Console.WriteLine(CZoomSDKeDotNetWrap.Instance.GetMeetingServiceWrap().GetClosedCaptionCtlr()
-                .SendClosedCaption(captionContent));
-        }
-
         private async Task InternalPostCaptionAsync(
             string captionContent,
             long sequenceNumber

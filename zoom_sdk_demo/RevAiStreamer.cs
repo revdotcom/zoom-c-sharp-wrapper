@@ -40,7 +40,7 @@ namespace zoom_sdk_demo
 
         public async Task StartAsync()
         {
-            var url = new Uri($"{Url}?access_token={AccessToken}&content_type=audio/x-raw;layout=interleaved;rate=32000;format=S16LE;channels=1");
+            var url = new Uri($"{Url}?access_token={AccessToken}&content_type=audio/x-raw;layout=interleaved;rate=32000;format=S16LE;channels=1&max_segment_duration_seconds=10");
             await _socket.ConnectAsync(url, default).ConfigureAwait(false);
             try
             {
