@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7B5A8DA1-8C98-40FD-B243-DC7A17011D33}</ProjectGuid>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>zoom_sdk_c_sharp_wrap</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
@@ -111,7 +111,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;CSHARP_WRAP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>Full</Optimization>
     </ClCompile>
     <Link>
@@ -154,6 +154,7 @@
     <ClInclude Include="meeting_audio_dotnet_wrap.h" />
     <ClInclude Include="meeting_breakout_rooms_dotnet_wrap.h" />
     <ClInclude Include="meeting_chat_dotnet_wrap.h" />
+    <ClInclude Include="meeting_closedcaption_ctrl_dotnet_wrap.h" />
     <ClInclude Include="meeting_configuration_dotnet_wrap.h" />
     <ClInclude Include="meeting_h323_helper_dotnet_wrap.h" />
     <ClInclude Include="meeting_live_stream_dotnet_wrap.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="meeting_waiting_room_dotnet_wrap.h" />
     <ClInclude Include="premeeting_service_dotnet_wrap.h" />
     <ClInclude Include="premeeting_service_dotnet_wrap_def.h" />
+    <ClInclude Include="rawdata_audio_helper_dotnet_wrap.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="schedule_meeting_item_dotnet_wrap.h" />
     <ClInclude Include="setting_service_dotnet_wrap.h" />
@@ -210,6 +212,10 @@
     <ClInclude Include="wrap\network_connection_handler_wrap.h" />
     <ClInclude Include="wrap\outlook_plugin_integration_helper_wrap.h" />
     <ClInclude Include="wrap\premeeting_service_wrap.h" />
+    <ClInclude Include="wrap\rawdata_audio_helper_wrap.h" />
+    <ClInclude Include="wrap\rawdata_renderer_callback_wrap.h" />
+    <ClInclude Include="wrap\rawdata_render_wrap.h" />
+    <ClInclude Include="wrap\rawdata_video_helper_wrap.h" />
     <ClInclude Include="wrap\recording_setting_context_wrap.h" />
     <ClInclude Include="wrap\schedule_meeting_item_wrap.h" />
     <ClInclude Include="wrap\sdk_loader.h" />
@@ -234,6 +240,7 @@
     <ClCompile Include="meeting_audio_dotnet_wrap.cpp" />
     <ClCompile Include="meeting_breakout_rooms_dotnet_wrap.cpp" />
     <ClCompile Include="meeting_chat_dotnet_wrap.cpp" />
+    <ClCompile Include="meeting_closedcaption_ctrl_dotnet_wrap.cpp" />
     <ClCompile Include="meeting_configuration_dotnet_wrap.cpp" />
     <ClCompile Include="meeting_h323_helper_dotnet_wrap.cpp" />
     <ClCompile Include="meeting_live_stream_dotnet_wrap.cpp" />
@@ -247,6 +254,7 @@
     <ClCompile Include="meeting_video_dotnet_wrap.cpp" />
     <ClCompile Include="meeting_waiting_room_dotnet_wrap.cpp" />
     <ClCompile Include="premeeting_service_dotnet_wrap.cpp" />
+    <ClCompile Include="rawdata_audio_helper_dotnet_wrap.cpp" />
     <ClCompile Include="schedule_meeting_item_dotnet_wrap.cpp" />
     <ClCompile Include="setting_service_dotnet_wrap.cpp" />
     <ClCompile Include="Stdafx.cpp">
@@ -378,6 +386,9 @@
     <ClCompile Include="wrap\premeeting_service_wrap.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="wrap\rawdata_audio_helper_wrap.cpp" />
+    <ClCompile Include="wrap\rawdata_render_wrap.cpp" />
+    <ClCompile Include="wrap\rawdata_video_helper_wrap.cpp" />
     <ClCompile Include="wrap\recording_setting_context_wrap.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>

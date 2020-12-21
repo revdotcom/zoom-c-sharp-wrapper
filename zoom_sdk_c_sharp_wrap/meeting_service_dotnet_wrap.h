@@ -17,6 +17,7 @@ using namespace System::Windows;
 #include "meeting_breakout_rooms_dotnet_wrap.h"
 #include "meeting_participants_ctrl_donet_wrap.h"
 #include "meeting_live_stream_dotnet_wrap.h"
+#include "meeting_closedcaption_ctrl_dotnet_wrap.h"
 
 namespace ZOOM_SDK_DOTNET_WRAP {
 	public enum class MeetingStatus : int
@@ -261,6 +262,7 @@ namespace ZOOM_SDK_DOTNET_WRAP {
 		IMeetingBreakoutRoomsControllerDotNetWrap^ GetMeetingBreakoutRoomsController();
 		IMeetingParticipantsControllerDotNetWrap^ GetMeetingParticipantsController();
 		IMeetingLiveStreamControllerDotNetWrap^ GetMeetingLiveStreamController();
+		IClosedCaptionCtrlDotNetWrap^ GetClosedCaptionCtlr();
 
 		void Add_CB_onMeetingStatusChanged(onMeetingStatusChanged^ cb);
 		void Add_CB_onMeetingStatisticsWarningNotification(onMeetingStatisticsWarningNotification^ cb);
@@ -311,6 +313,7 @@ namespace ZOOM_SDK_DOTNET_WRAP {
 		virtual IMeetingBreakoutRoomsControllerDotNetWrap^ GetMeetingBreakoutRoomsController();
 		virtual IMeetingParticipantsControllerDotNetWrap^ GetMeetingParticipantsController();
 		virtual IMeetingLiveStreamControllerDotNetWrap^ GetMeetingLiveStreamController();
+		virtual IClosedCaptionCtrlDotNetWrap^ GetClosedCaptionCtlr();
 
 		virtual void Add_CB_onMeetingStatusChanged(onMeetingStatusChanged^ cb)
 		{
